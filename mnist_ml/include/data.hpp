@@ -16,7 +16,7 @@ class data{
         void set_label(uint8_t);
         void set_enumerated_label(int);
 
-        uint8_t get_feature_vector_size();
+        int get_feature_vector_size();
         uint8_t get_label();
         int8_t get_enumerated_label();
 
