@@ -37,10 +37,10 @@ void data_handler::read_feature_vector(std::string path){
             }
             data_array -> push_back(d);
         }
-        printf("Successful in reading and storing feature vectors\n", data_array->size());
+        printf("Successful in reading and storing %lu feature vectors.\n", data_array->size());
     }
     else{ //no pointer to file
-        printf("Could not find file");
+        printf("Could not find file.\n");
         exit(1);
     }
 }
@@ -48,7 +48,7 @@ void data_handler::read_feature_vector(std::string path){
 
 void data_handler::read_feature_labels(std::string path){
     uint32_t header[2]; //magic number | num images |
-    unsigned char bytes[2];
+    unsigned char bytes[4];
     FILE *f = fopen(path.c_str(), "r");
     if (f){ //if there is a pointer to the file
         for (int i = 0; i< 2; i++){
@@ -67,10 +67,10 @@ void data_handler::read_feature_labels(std::string path){
                 exit(1);
             }
         }
-        printf("Successful in reading and storing labels\n", data_array->size());
+        printf("Successful in reading and storing %lu labels\n", data_array->size());
     }
     else{ //no pointer to file
-        printf("Could not find file");
+        printf("Could not find file. \n");
         exit(1);
     }
 };
@@ -78,26 +78,26 @@ void data_handler::read_feature_labels(std::string path){
 
 void data_handler::split_data(){
     std::unordered_set<int> used_indexes;
-    int train_size = data_array -> size() * TRAIN_SET_PERCENT;
-    int test_size = data_array -> size() * TEST_SET_PERCENT;
-    int validation_size = data_array -> size() * VALIDATION_PERCENT;
+    int train_size = data_array->size() * TRAIN_SET_PERCENT;
+    int test_size = data_array->size() * TEST_SET_PERCENT;
+    int validation_size = data_array->size() * VALIDATION_PERCENT;
 
     //Train Data
+    int rand_index;
     int count = 0;
     while (count < train_size){
-        int rand_index = rand() % data_array->size();
+        rand_index = rand() % data_array->size();
         if (used_indexes.find(rand_index) == used_indexes.end()){ //rand index is not in set
             training_data->push_back(data_array->at(rand_index));
-            used_indexes.begin(rand_index);
+            used_indexes.insert(rand_index);
             count++;
         }
-
     }
 
     //Test Data
     count = 0;
     while (count < test_size){
-        int rand_index = rand() % data_array->size();
+        rand_index = rand() % data_array->size();
         if (used_indexes.find(rand_index) == used_indexes.end()){
             test_data->push_back(data_array->at(rand_index));
             used_indexes.insert(rand_index);
@@ -108,7 +108,7 @@ void data_handler::split_data(){
 //Validation Data
     count = 0;
     while (count < validation_size){
-        int rand_index = rand() % data_array->size();
+        rand_index = rand() % data_array->size();
         if (used_indexes.find(rand_index) == used_indexes.end()){
             validation_data->push_back(data_array->at(rand_index));
             used_indexes.insert(rand_index);
@@ -131,7 +131,7 @@ void data_handler::count_classes(){
         }
     }
     num_classes = count;
-    printf("Successfully extracted %d unique classes", num_classes);
+    printf("Successfully extracted %d unique classes.\n", num_classes);
 }
 
 uint32_t data_handler::convert_to_little_endian(const unsigned char* bytes){
@@ -157,8 +157,8 @@ std::vector<data *> * data_handler::get_validation_data(){
 
 int main(){
     data_handler *dh = new data_handler();
-    dh->read_feature_labels("file path");
-    dh->read_feature_vector("file path");
+    dh->read_feature_vector("../Files/train-images-idx3-ubyte");
+    dh->read_feature_labels("../Files/train-labels-idx1-ubyte");
     dh->split_data();
     dh->count_classes();
 }
