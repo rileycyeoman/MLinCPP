@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include <map> //map class to enumerated value
-#include <unordered_map> //for keeping track of indexes of split data
+#include <unordered_set> //for keeping track of indexes of split data
 
 class data_handler{
     std::vector<data *> *data_array; //all data, pre-split
@@ -34,9 +34,9 @@ class data_handler{
         
         uint32_t convert_to_little_endian(const unsigned char* bytes);
 
-        std::vector<data *> get_training_data();
-        std::vector<data *> get_testing_data();
-        std::vector<data *> get_validation_data();
+        std::vector<data *> *get_training_data();
+        std::vector<data *> *get_testing_data();
+        std::vector<data *> *get_validation_data();
 };  
 
 
