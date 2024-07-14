@@ -1,0 +1,76 @@
+#include "knn.hpp"
+#include <cmath>
+#include <limits>
+#include <map>
+#include <stdint.h>
+#include "data_handler.hpp"
+knn::knn(int val){
+    k = val;
+}
+knn::knn(){
+
+}
+knn::~knn(){
+
+}
+void knn::find_knearest(data *query_point){
+    neighbors = new std::vector<data * >;
+    double min = std::numeric_limits<double>::max();
+    double previous_min = min;
+    int index = 0;
+    for (int i = 0; i < k; i++){
+        if (i == 0){
+            for (int j = 0; j < training_data->size(); j++){
+                double distance = calculate_distance(query_point, training_data->at(j));
+            }
+        }
+    }
+}
+
+void knn::set_training_data(std::vector<data *> *vect){
+    training_data = vect;
+}
+
+void knn::set_test_data(std::vector<data *> *vect){
+    test_data = vect;
+}
+void knn::set_validation_data(std::vector<data *> *vect){
+    validation_data = vect;
+}
+
+void knn::set_k(int val){
+    k = val;
+}
+
+int knn::predict(){
+
+}
+
+double knn::calculate_distance(data* query_point, data * input){
+    
+    double distance = 0.0;
+    if(query_point->get_feature_vector_size() != input->get_feature_vector_size()){
+        printf("Error: Vector size mismatch");
+        exit(1);
+    }
+    for (unsigned i = 0; i< query_point->get_feature_vector_size(); i++){
+        distance = pow(query_point->get_feature_vector()->at(i) - input->get_feature_vector()->at(i), 2);        
+
+    }
+    distance = sqrt(distance);
+    
+    #ifdef EUCLID
+    
+    #elif defined MANHATTAN
+    
+    #endif 
+    return distance;
+}
+
+double validate_performance(){
+
+}
+double test_performance(){
+
+
+}
