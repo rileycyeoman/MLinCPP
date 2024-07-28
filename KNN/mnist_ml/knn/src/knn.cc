@@ -22,7 +22,27 @@ void knn::find_knearest(data *query_point){
         if (i == 0){
             for (int j = 0; j < training_data->size(); j++){
                 double distance = calculate_distance(query_point, training_data->at(j));
+                training_data->at(j)->set_distance(distance);
+                if (distance < min){
+                    min = distance;
+                    index = j;
+                }
             }
+            neighbors->push_back(training_data->at(index));
+            previous_min = min;
+            min = std::numeric_limits<double>::max();
+        }
+        else{
+            for (int j = 0; j < training_data->size(); j++){
+                double distance = calculate_distance(query_point, training_data->at(j));
+                if (distance > previous_min && distance < min){
+                    min = distance;
+                    index = j;
+                }
+            }
+            neighbors->push_back(training_data->at(index));
+            previous_min = min;
+            min = std::numeric_limits<double>::max();
         }
     }
 }
