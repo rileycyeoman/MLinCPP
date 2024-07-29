@@ -30,7 +30,8 @@ public:
     std::vector<Matrix*> weights;
     Scalar learningRate;
 
-
+    void ReadCSV(std::string filename, std::vector<RowVector*>& data);
+    void genData(std::string filename);
 };
 
 #endif
